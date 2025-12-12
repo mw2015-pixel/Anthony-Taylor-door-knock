@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FRONT_DOOR_OS v1.0</title>
+  <style>
+    body {
+      background: #000;
+      color: #00ff66;
+      font-family: "Courier New", monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+
+    .screen {
+      width: 100%;
+      max-width: 700px;
+      border: 2px solid #00ff66;
+      padding: 20px;
+      box-shadow: 0 0 15px #00ff66;
+      background: #000;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .divider {
+      border-top: 1px solid #00ff66;
+      margin: 8px 0 16px 0;
+    }
+
+    #log {
+      white-space: pre-wrap;
+      min-height: 200px;
+      font-size: 0.95rem;
+    }
+
+    .cat-wrapper {
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+
+    .cat-gif {
+      max-width: 260px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .status {
+      font-size: 0.95rem;
+      color: #00ffcc;
+    }
+
+    .rejected {
+      color: #ff5555;
+      font-weight: bold;
+      margin-top: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="screen">
+    <div class="title">FRONT_DOOR_OS v1.0 - HOME TERMINAL</div>
+    <div class="divider"></div>
+
+    <div id="log"></div>
+
+    <div class="cat-wrapper" id="cat">
+      <img
+        class="cat-gif"
+        src="https://i.ibb.co/0jYD4Qfq/IMG-7469.jpg"
+        alt="Loading… cat"
+      />
+      <div id="status" class="status">STATUS: Running feline load balancer…</div>
+      <div id="reject" class="rejected"></div>
+    </div>
+  </div>
+
+  <script>
+    const lines = [
+      "BOOTING FRONT_DOOR_OS v1.0...",
+      "Initializing visitor protocols...",
+      "Checking for food or package deliveries...",
+      "Scanning calendar for scheduled humans...",
+      "Updating household social battery...",
+      "Result: Social battery critically low.",
+      "Engaging distraction sequence: COMPUTER_CAT.EXE"
+    ];
+
+    const log = document.getElementById("log");
+    const catWrapper = document.getElementById("cat");
+    const status = document.getElementById("status");
+    const reject = document.getElementById("reject");
+
+    let lineIndex = 0;
+
+    function typeLine(text, callback) {
+      let charIndex = 0;
+      const interval = setInterval(() => {
+        if (charIndex < text.length) {
+          log.textContent += text[charIndex];
+          charIndex++;
+        } else {
+          clearInterval(interval);
+          log.textContent += "\n";
+          if (callback) setTimeout(callback, 800);
+        }
+      }, 40);
+    }
+
+    function nextLine() {
+      if (lineIndex < lines.length) {
+        typeLine(lines[lineIndex], () => {
+          lineIndex++;
+          setTimeout(nextLine, 400);
+        });
+      } else {
+        setTimeout(() => {
+          catWrapper.style.display = "block";
+        }, 600);
+
+        setTimeout(() => {
+          status.textContent = "STATUS: ACCESS DENIED";
+          reject.textContent =
+            "Reason: Unscheduled, unsanctioned visit detected.\n" +
+            "Resolution: Please try again later at a prearranged time.";
+        }, 6000);
+      }
+    }
+
+    nextLine();
+  </script>
+</body>
+</html>
